@@ -81,10 +81,6 @@ std::size_t countWords(fs::path const& path) {
      * - tạo danh sách các task xử lý độc lập
      * - chuẩn bị cho đợt thực thi song song sắp tới
      */
-    if (!fs::exists(dir) || !fs::is_directory(dir)) {
-        co_return 0;
-    }
-
     std::vector<fs::path> files;
 
     for (fs::directory_entry const& entry : fs::directory_iterator(dir)) {
@@ -135,6 +131,9 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[]) {
     }
 
     fs::path const dir{argv[1]};
+    if (!fs::exists(dir) || !fs::is_directory(dir)) {
+        return EXIT_FAILURE;
+    }
 
     ScopedTimer timer{};
 
