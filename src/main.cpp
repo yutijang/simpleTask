@@ -1,4 +1,5 @@
 // clang-format off
+#include "ScopeExit.hpp"
 #include "async/thread_pool.hpp"
 #include "async/coroutine_task.hpp"
 #include "async/schedule_awaiter.hpp"
@@ -16,7 +17,7 @@
 #include <filesystem>
 #include <functional>
 #include <future>
-#include <memory>
+// #include <memory>
 #include <print>
 #include <string_view>
 #include <utility>
@@ -59,7 +60,7 @@ std::size_t countWords(fs::path const& path) {
 
 [[maybe_unused]] TaskReturn<std::size_t>
     simpleTask(Async::ThreadPool& pool, fs::path const& dir, std::promise<void>& done) {
-    auto guard = std::shared_ptr<void>(nullptr, [&done](void*) {
+    auto guard = ScopeExit([&done]() {
         done.set_value();
     });
 
