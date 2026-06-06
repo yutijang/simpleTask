@@ -1,0 +1,172 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "shell",
+            "label": "Build Active File with clang++ (Debug)",
+            "command": "clang++",
+            "args": [
+                "${file}",
+                "-stdlib=libc++",
+                "-std=c++23",
+                "-g3",
+                "-O0",
+                "-fdiagnostics-color=always",
+                "-Wall",
+                "-Wextra",
+                "-Wpedantic",
+                "-Wconversion",
+                "-Wshadow",
+                "-Werror",
+                "-Wno-unused-parameter",
+                "-Wnon-virtual-dtor",
+                "-Iinclude",
+                "-include",
+                "include/pch.hpp",
+                "-include-pch",
+                "build/pch.hpp.pch",
+                "-fuse-ld=lld",
+                "-o",
+                "build/${fileBasenameNoExtension}"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                {
+                    "owner": "cpp",
+                    "fileLocation": [
+                        "relative",
+                        "${workspaceFolder}"
+                    ],
+                    "pattern": {
+                        "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error|note):\\s+(.*)$",
+                        "file": 1,
+                        "line": 2,
+                        "column": 3,
+                        "severity": 4,
+                        "message": 5
+                    }
+                }
+            ],
+            "presentation": {
+                "reveal": "silent", // "always"|"never"|"silent"
+                "panel": "dedicated"
+            },
+            "group": "build",
+            "detail": "Build Active File with clang++ (Debug)"
+        },
+        {
+            "type": "shell",
+            "label": "Build Active File with clang++ (Release)",
+            "command": "clang++",
+            "args": [
+                "${file}",
+                "-std=c++23",
+                "-O3",
+                "-fdiagnostics-color=always",
+                "-Wall",
+                "-Wextra",
+                "-Wpedantic",
+                "-Werror",
+                "-Iinclude",
+                "-include",
+                "include/pch.hpp",
+                "-fuse-ld=lld",
+                "-s",
+                "-o",
+                "build/${fileBasenameNoExtension}_release"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                {
+                    "owner": "cpp",
+                    "fileLocation": [
+                        "relative",
+                        "${workspaceFolder}"
+                    ],
+                    "pattern": {
+                        "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error|note):\\s+(.*)$",
+                        "file": 1,
+                        "line": 2,
+                        "column": 3,
+                        "severity": 4,
+                        "message": 5
+                    }
+                }
+            ],
+            "presentation": {
+                "reveal": "silent",
+                "panel": "dedicated"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "detail": "Build Active File with clang++ (Release)"
+        },
+        {
+            "type": "shell",
+            "label": "Build precompiled header with clang++",
+            "command": "clang++",
+            "args": [
+                "-stdlib=libc++",
+                "-std=c++23",
+                "-Wall",
+                "-Wextra",
+                "-Wpedantic",
+                "-Werror",
+                "-Wno-unused-parameter",
+                "-x",
+                "c++-header",
+                "include/pch.hpp",
+                "-o",
+                "build/pch.hpp.pch"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                {
+                    "owner": "cpp",
+                    "fileLocation": [
+                        "relative",
+                        "${workspaceFolder}"
+                    ],
+                    "pattern": {
+                        "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error|note):\\s+(.*)$",
+                        "file": 1,
+                        "line": 2,
+                        "column": 3,
+                        "severity": 4,
+                        "message": 5
+                    }
+                }
+            ],
+            "presentation": {
+                "reveal": "silent", // "always"
+                "panel": "dedicated"
+            },
+            "group": "build",
+            "detail": "Build precompiled header with clang++"
+        },
+        {
+            "type": "shell",
+            "label": "Clean Build",
+            "hide": true,
+            "command": "rm",
+            "args": [
+                "-rf",
+                "${workspaceFolder}/build/*"
+            ],
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "never", // "always"
+                "panel": "dedicated"
+            },
+            "detail": "Clean build directory"
+        }
+    ]
+}

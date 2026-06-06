@@ -1,0 +1,21 @@
+{
+    "files.watcherExclude": {
+        "**/build/**": true
+    },
+    "search.exclude": {
+        "**/build/**": true
+    },
+    "files.exclude": {
+        "**/build": false,
+        "**/.vscode": false,
+        ".clang*": false
+    },
+    "clangd.arguments": [
+        "--header-insertion=never",
+        "--completion-style=detailed",
+        "--pch-storage=memory",
+        "--fallback-style=none",
+        "-j=8",
+        "--malloc-trim"
+    ]
+}

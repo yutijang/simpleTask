@@ -1,0 +1,20 @@
+CompileFlags:
+  Compiler: clang++
+
+InlayHints:
+  BlockEnd: true
+  
+Completion:  
+  ArgumentLists: Delimiters
+
+Diagnostics:
+  UnusedIncludes: Strict  # Strict/None
+  MissingIncludes: Strict # Strict/None
+  Suppress: [
+    macro-redefined,
+    expected-expression,
+    expected-semi,
+    builtin_definition,
+    conflicting_types,
+    readability-magic-numbers
+  ]

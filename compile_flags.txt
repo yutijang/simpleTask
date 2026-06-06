@@ -1,0 +1,17 @@
+--target=x86_64-pc-linux-gnu
+-stdlib=libc++
+-std=c++23
+-xc++
+-Werror
+-Wall
+-Wextra
+-Wpedantic
+-Wconversion
+-Wshadow
+-Wno-unused-parameter
+-Wnon-virtual-dtor
+-Wold-style-cast
+-Iinclude
+-isystem /usr/lib/llvm-22/include/c++/v1
+-isystem /usr/include
+-isystem /usr/include/x86_64-linux-gnu

@@ -1,0 +1,67 @@
+---
+BasedOnStyle: LLVM
+---
+Language: Cpp
+
+SortIncludes: true
+IncludeBlocks: Regroup
+SpacesInContainerLiterals: false
+SpaceAfterTemplateKeyword: false
+SpaceAfterCStyleCast: true
+SpaceBeforeParens: Custom
+KeepEmptyLinesAtTheStartOfBlocks: false
+InsertBraces: true
+ReflowComments: true
+IndentRequires: true
+IndentCaseLabels: true
+IndentAccessModifiers: false
+IndentWrappedFunctionNames: true
+IndentPPDirectives: None
+RemoveParentheses: MultipleParentheses
+NamespaceIndentation: None
+BreakInheritanceList: AfterComma
+RequiresExpressionIndentation: Keyword
+AllowShortBlocksOnASingleLine: Never
+AllowShortFunctionsOnASingleLine: Empty
+AllowShortIfStatementsOnASingleLine: Never 
+AllowShortLoopsOnASingleLine: false
+AllowShortCaseLabelsOnASingleLine: true
+AllowShortLambdasOnASingleLine: None
+AlignConsecutiveAssignments: None
+AlignConsecutiveDeclarations: None
+AlignConsecutiveBitFields: Consecutive
+AlignArrayOfStructures: Right
+AlignOperands: AlignAfterOperator
+PointerAlignment: Left
+ReferenceAlignment: Left
+SeparateDefinitionBlocks: Always
+BinPackArguments: false
+BinPackParameters: false
+IndentWidth: 4
+ShortNamespaceLines: 0
+ColumnLimit: 100
+SpaceBeforeParensOptions:
+  AfterPlacementOperator: false
+BraceWrapping:  
+  SplitEmptyRecord: false
+  SplitEmptyFunction: false
+  SplitEmptyNamespace: false
+AlignConsecutiveShortCaseStatements:
+  Enabled: true 
+  AcrossComments: true 
+  AlignCaseColons: true 
+  AcrossEmptyLines: true
+AlignTrailingComments:
+  OverEmptyLines: 2
+QualifierAlignment: Custom
+QualifierOrder:
+  [
+    inline,
+    static,
+    friend,
+    constexpr,
+    restrict,
+    type,
+    const,
+    volatile
+  ]

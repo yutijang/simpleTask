@@ -1,0 +1,30 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug C++ with LLDB Clang++ (WSL2)",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/${fileBasenameNoExtension}",
+            "args": [],
+            "cwd": "${workspaceFolder}/build",
+            "terminal": "integrated",
+            "internalConsoleOptions": "neverOpen",
+            "preLaunchTask": "Build Active File with clang++ (Debug)"
+        },
+        {
+            "name": "Build release C++ (WSL2)",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/${fileBasenameNoExtension}_release",
+            "args": [],
+            "cwd": "${workspaceFolder}/build",
+            "terminal": "integrated",
+            "internalConsoleOptions": "neverOpen",
+            "preLaunchTask": "Build Active File with clang++ (Release)",
+            "presentation": {
+                "hidden": true
+            }
+        }
+    ]
+}
