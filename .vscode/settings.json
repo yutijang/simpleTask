@@ -17,5 +17,7 @@
         "--fallback-style=none",
         "-j=8",
         "--malloc-trim"
-    ]
+    ],
+    "files.insertFinalNewline": true,
+    "files.encoding": "utf8"
 }
