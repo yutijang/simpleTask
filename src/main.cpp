@@ -11,6 +11,7 @@
 #include <cctype>
 #include <coroutine>
 #include <cstddef>
+#include <cstdlib>
 #include <exception>
 #include <filesystem>
 #include <functional>
@@ -56,15 +57,30 @@ std::size_t countWords(fs::path const& path) {
     return count;
 }
 
-[[maybe_unused]] TaskReturn<std::size_t> simpleTask(Async::ThreadPool& pool,
-                                                    std::promise<void>& done) {
+[[maybe_unused]] TaskReturn<std::size_t>
+    simpleTask(Async::ThreadPool& pool, fs::path const& dir, std::promise<void>& done) {
     auto guard = std::shared_ptr<void>(nullptr, [&done](void*) {
         done.set_value();
     });
 
+    /** ĐIỂM CHIA TAY **
+     * Đây là điểm cuối cùng coroutine còn chạy trên main thread.
+     *
+     * Sau co_await pool:
+     * - coroutine được đưa vào thread pool
+     * - main thread quay về main() và chờ tại future.get()
+     * - một worker thread sẽ tiếp quản phần việc còn lại
+     */
     co_await pool;
 
-    fs::path const dir{"../content-generated"};
+    /** BẮT ĐẦU THU THẬP VÀ CHUẨN BỊ THUỐC NỔ **
+     * Coroutine giờ đã chạy trên một worker thread.
+     *
+     * Worker thread này sẽ:
+     * - thu thập danh sách file cần xử lý
+     * - tạo danh sách các task xử lý độc lập
+     * - chuẩn bị cho đợt thực thi song song sắp tới
+     */
     if (!fs::exists(dir) || !fs::is_directory(dir)) {
         co_return 0;
     }
@@ -94,24 +110,42 @@ std::size_t countWords(fs::path const& path) {
         });
     }
 
+    /** ĐIỂM KÍCH NỔ **
+     * Toàn bộ thuốc nổ được châm ngòi tại đây.
+     *
+     * Các task được đẩy vào thread pool và bắt đầu chạy đồng thời.
+     * Worker thread nào rảnh sẽ giành lấy task tiếp theo để xử lý.
+     *
+     * Coroutine đứng ngoài quan sát và chờ mọi vụ nổ kết thúc
+     * trước khi quay lại thu thập kết quả.
+     */
     co_await Async::when_all(pool, std::move(tasks));
 
+    /** Thu thập kết quả và trả về */
     co_return totalWords.load(std::memory_order_relaxed);
 }
 
 } // namespace
 
-int main() {
+int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[]) {
+    if (argc < 2) {
+        std::println("USAGE: ./<binary_name> <directory_path>");
+
+        return EXIT_FAILURE;
+    }
+
+    fs::path const dir{argv[1]};
+
     ScopedTimer timer{};
 
     Async::ThreadPool pool;
     std::promise<void> done;
-    auto fut = done.get_future();
+    auto future = done.get_future();
 
-    auto task = simpleTask(pool, done);
+    auto task = simpleTask(pool, dir, done);
     task.resume();
 
-    fut.get();
+    future.get();
 
     if (task.done()) {
         try {
@@ -122,5 +156,5 @@ int main() {
         }
     }
 
-    return 0;
+    return EXIT_SUCCESS;
 }
