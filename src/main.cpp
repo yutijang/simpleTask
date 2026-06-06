@@ -124,6 +124,8 @@ std::size_t countWords(fs::path const& path) {
 } // namespace
 
 int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[]) {
+    ScopedTimer timer{};
+
     if (argc < 2) {
         std::println("USAGE: ./<binary_name> <directory_path>");
 
@@ -134,8 +136,6 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[]) {
     if (!fs::exists(dir) || !fs::is_directory(dir)) {
         return EXIT_FAILURE;
     }
-
-    ScopedTimer timer{};
 
     Async::ThreadPool pool;
     std::promise<void> done;
