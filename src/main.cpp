@@ -17,7 +17,6 @@
 #include <filesystem>
 #include <functional>
 #include <future>
-// #include <memory>
 #include <print>
 #include <string_view>
 #include <utility>
@@ -58,8 +57,11 @@ std::size_t countWords(fs::path const& path) {
     return count;
 }
 
-[[maybe_unused]] TaskReturn<std::size_t>
+TaskReturn<std::size_t>
     simpleTask(Async::ThreadPool& pool, fs::path const& dir, std::promise<void>& done) {
+    /** Đảm bảo main thread đang chờ (future.get()) không bị treo vô thời hạn
+     *  nếu coroutine thoát theo bất kỳ con đường nào.
+     */
     auto guard = ScopeExit([&done]() {
         done.set_value();
     });
@@ -139,6 +141,7 @@ int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[]) {
     }
 
     Async::ThreadPool pool;
+
     std::promise<void> done;
     auto future = done.get_future();
 

@@ -25,4 +25,5 @@ template<typename F> class ScopeExit {
     bool m_active{true};
 };
 
+// CTAD - Class Template Argument Deduction (C++17)
 template<typename F> ScopeExit(F) -> ScopeExit<F>;
